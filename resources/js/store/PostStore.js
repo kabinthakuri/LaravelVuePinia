@@ -55,8 +55,9 @@ export const PostStore = defineStore("post", {
     },
 
     deleteItem(id) {
-      axios.delete('/api/post/'+id);
-      this.fetchItem();
+      axios.delete('/api/post/'+id).then((response) => {
+        this.fetchItem();
+      });
     },
 
     changeImage(event) {
