@@ -38,7 +38,7 @@
               <div class="form-group">
                 <input type="file" class="form-control" @change="changeImage($event)">
               </div>
-              <button class="btn btn-dark">{{ edit_id ? 'Update' : 'Save' }}</button>
+              <button class="btn btn-dark">{{ loading ?   'Loading...' : (edit_id ? 'Update' : 'Save') }}</button>
             </form>
           </div>
         </div>
@@ -51,7 +51,7 @@
 import { storeToRefs } from 'pinia';
 import { PostStore } from "@/store/PostStore";
 
-const { posts, title, edit_id, description } = storeToRefs(PostStore());
+const { posts, title, edit_id, description, loading } = storeToRefs(PostStore());
 const { addItem, fetchItem, changeImage, editItem, deleteItem } = PostStore();
 fetchItem();
 </script>

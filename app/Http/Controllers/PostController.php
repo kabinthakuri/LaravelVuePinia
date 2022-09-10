@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Notifications\PostNotification;
+use Illuminate\Support\Facades\Notification;
+use App\Events\PostCreated;
+
 
 class PostController extends Controller
 {
@@ -47,6 +51,7 @@ class PostController extends Controller
             'description' => $request->description,
             'image' => $image
         ]);
+        event(new PostCreated($post));
         return response()->json('post created');
     }
 
@@ -104,6 +109,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
-        return response->json('post deleted');
+        return response()->json('post deleted');
     }
 }

@@ -8,6 +8,7 @@ export const PostStore = defineStore("post", {
     title: null,
     description: null,
     image: null,
+    loading: false,
   }),
 
   getters: {
@@ -16,6 +17,7 @@ export const PostStore = defineStore("post", {
 
   actions: {
     addItem () {
+      this.loading = true;
       let formData = new FormData();
       
       formData.append('title',this.title);
@@ -34,11 +36,14 @@ export const PostStore = defineStore("post", {
         axios.post('api/post/'+this.edit_id, formData, config).then(() => {
           this.fetchItem();
           this.resetData();
+          this.loading = false;
+          this.edit_id = null;
         });
       }else {
         axios.post('api/post', formData, config).then((response) => {
           this.fetchItem();
           this.resetData();
+          this.loading = false;
         });
       }
     },
@@ -54,10 +59,14 @@ export const PostStore = defineStore("post", {
        this.edit_id = post.id;
     },
 
-    deleteItem(id) {
-      axios.delete('/api/post/'+id).then((response) => {
-        this.fetchItem();
-      });
+    async deleteItem(id) {
+      try {
+        await axios.delete('api/post/'+id).then((response) => {
+          this.fetchItem();
+        });
+      }catch(e) {
+        console.log(e);
+      }
     },
 
     changeImage(event) {
