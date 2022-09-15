@@ -97,6 +97,7 @@ class PostController extends Controller
         $post->description = $request->description;
         $post->save();
         
+        $post->notify(new PostNotification($post));
         return response()->json('post updated');
     }
 
